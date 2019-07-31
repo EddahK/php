@@ -1,0 +1,21 @@
+<?php 
+include ("php_includes/db_conx.php");
+ $output = ''; 
+ //collect
+  if(isset($_POST["searchVal"])){
+$searchq = $_POST['searchVal'];
+  $searchq = preg_replace('#[^a-z0-9]#i', '', $searchq); 
+  $sql= "SELECT * FROM users WHERE username LIKE '%$searchq%' OR email LIKE '%$searchq%'"; 
+  $query = mysqli_query($db_conx, $sql); 
+  $count = mysqli_num_rows($query); if($count == 0){ $output = 'There was no search results!';
+   } else { 
+   while($row = mysqli_fetch_array($query, MYSQLI_ASSOC)) { $username = $row['username'];
+    $email = $row['email'];
+	 /* You don't actually need this one */
+	  $output .= '<div><a href="user.php?u='.$username.'">'.$username.'</a></div>'; 
+	 }
+	  } 
+  }
+	 echo $output; 
+	 exit();
+	  ?>
